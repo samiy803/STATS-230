@@ -1,0 +1,374 @@
+
+\documentclass{report}
+
+\input{preamble}
+\input{macros}
+\input{letterfonts}
+
+\title{\Huge{STAT 230}\\Midterm II Notes}
+\author{\huge{Sami Yousef}}
+\date{}
+
+\begin{document}
+
+\maketitle
+\newpage% or \cleardoublepage
+\pdfbookmark[section]{\contentsname}{toc}
+\tableofcontents
+\pagebreak
+
+\chapter{Discrete and random variables}
+\section{Random Variables and Probability Functions}
+\dfn{Random Variable (aka "RV" or "rv")}{A function that maps a sample space to the real numbers.}
+\dfn{Range of a random variable}{The set of all possible values that the random variable can take. We can denote the range of $X$ by $X(S)$, where $S$ is the sample space.}
+\dfn{Discrete random variable}{A random variable that takes on a finite or countably infinite number of values.}
+\dfn{Continuous random variable}{A random variable that takes on an uncountably infinite number of values.}
+\nt {A random variable can be both discrete and infinite. For example, consider $X = \text{the number of goals scored in a season}$. The range of $X$ is $\{0, 1, 2, \dots \}$, which is both infinte and discrete!}
+
+\ex{Range of a random variable}{If $X$ is the number of calls to a help line in a day, then the range of $X$ is $\{0, 1, 2, \dots \}$.
+\\ If $X$ is the number of heads in 10 coin flips, then the range of $X$ is $\{0, 1, 2, \dots, 10\}$.
+\\ If $X$ is the duration spent studying for STAT 230, then the range of $X$ is $(0, \infty)$.}
+
+I'm going to skip the rest of the section because it's easy and boring. Also, I just found out its not on the MT lol.
+
+\section{Discrete Uniform Distribution}
+\dfn{Discrete Uniform Distribution}{If a rv $X$ has a range $\{a, a+1, \dots, b\}$ with each value being equally likely, then $X$ has a discrete uniform distribution on $a$ to $b$. Denoted by $X \sim U(a, b)$.}
+\ex{Discrete Uniform Distribution}{If $X$ is the number of heads in 10 coin flips, then $X \sim U(0,10)$.}
+
+\qs{} {Suppose $X \sim(a, b)$. Find $f(x)$ and $F(x)$.}
+\sol {We know that $\Sigma f(x) = 1$. Since each value is equally likely, then $|A|f(x) = 1$, where $|A|$ is the size of the range of $X$. Therefore, $f(x) = \frac{1}{b-a+1}$, for $x = a, a+1, \dots, b$.
+\\ For $F(x)$, we know that $F(x) = P(X \leq x)$.
+\\ For $x \leq a$, $F(x) = 0$. For $x \geq b$, $F(x) = 1$.
+\\ For $a < x < b$, $F(x) = \Sigma_{i = a}^{\floor x} f(i) = ( \floor x - a+ 1) f(x) = \frac{\floor x - a + 1}{b-a+1} $.}
+\qs{}{Suppose three 6 sided dice are rolled. Let $X$ denote the largest number that is rolled. Compute $f(x)$.}
+
+\sol {Let $Y_i$ denote the number rolled on the $i$th die. Then $Y_i \sim U(1,6)$, for $i = 1, 2, 3$.
+\\ Now consider $F(x)$. Since $X$ is the maximum of $Y_i$, we know $X \leq x \iff Y_i \leq x$ for all $i \in {1,2,3}$.
+\\ So, $F(x) = P(X \leq x) = P(Y_1 \leq x \land Y_2 \leq x \land Y_3 \leq x)$.}
+
+\begin{align*}
+F(x) &= P(Y_1 \leq x \land Y_2 \leq x \land Y_3 \leq x) \\
+&= \frac{\floor x}{6} \cdot \frac{\floor x}{6} \cdot \frac{\floor x}{6} \\
+&= \frac{\floor x^3}{216}
+\end{align*}
+
+Now we can compute $f(x)$ since we know $f(x) = F(X) - F(X-1)$.
+
+\begin{align*}
+f(x) &= F(x) - F(x-1) \\
+     &= \frac{\floor x^3}{216} - \frac{\floor{x-1}^3}{216} \\
+&= \frac{3\floor x^2 - 3\floor x + 1}{216}
+\end{align*}
+
+\section{Hypergeometric Distribution}
+\dfn{Hypergeometric Distribution}{Consider a population that consists of $N$ objects, of which $r$ are considered “successes” and the remaining $N - r$ are considered “failures”.
+\\ Suppose that $n$ objects are drawn at random from the population without replacement. Let $X$ be the number of successes in the $n$ objects drawn. Then $X$ has a hypergeometric distribution with parameters $N$, $r$, and $n$. Denoted by $X \sim hyp(N, r, n)$.
+\\[1em] $f(x)_X = \frac{\binom{r}{x} \binom{N-r}{n-x}}{\binom{N}{n}}$, for $\max(0, n+r-N)\leq x \leq \min(r, n)$. }
+
+\ex{Hypergeometric Distribution}{Suppose $X$ is the number of aces in a hand of 5 cards drawn from a standard deck of 52 cards. Then $X \sim hyp(52, 4, 5)$.}
+
+\qs{}{Consider drawing a 5 card hand at random from a standard 52
+card deck of playing cards. What is the probability that the hand contains at least 3 K's}
+\sol{Let $X$ be the number of K's in the hand. 
+\\ Then $X \sim hyp(52, 4, 5)$. So we have
+\begin{align*}
+P(X \geq 3) &= P(X = 3) + P(X = 4)\\
+&= \frac{\binom{4}{3} \binom{48}{2}}{\binom{52}{5}} + \frac{\binom{4}{4} \binom{48}{1}}{\binom{52}{5}}\\
+&= 0.00175
+\end{align*}
+}
+
+\ex{Hypergeometric Distribution}{Suppose a bag contains 20 balls of which 4 are blue, 6 are red and 10 are green. We draw 5 balls at random without replacement. Let
+$X$ denote the number balls drawn that are not blue. Then $X \sim hyp(20, 16, 5)$.
+}
+
+\section{Binomial Distribution}
+
+\dfn{Bernoulli Trial}{A trial that has only two possible outcomes, success and failure.}
+
+\dfn{Binomial Distribution}{Let $X$ be the number of successes in $n$ independent Bernoulli trials, each with probability $p$ of success. Then $X$ has a binomial distribution with parameters $n$ and $p$. Denoted by $X \sim Binomial(n, p)$.
+\\[1em] $f(x)_X = \binom{n}{x} p^x (1-p)^{n-x}$, for $x \in \{0, 1, \dots, n\}$.}
+
+\ex{Binomial Distribution}{Suppose $X$ is the number of heads in 10 coin flips. Then $X \sim Binomial(10, 0.5)$.}
+
+\nt{A key assumption of the Binomial Distribution is that the trials are independent and the probability of each trial is constant. If these assumptions are not met, the Binomial Distribution would not be appropriate.}
+
+\qs{}{Suppose a tack is flipped 10 times, with a probability of 0.6 of landing point up. What is the probability that the tack lands pointing up at least 3 times?}
+\sol{Let $X$ be the number of times the tack lands pointing up. Then $X \sim Binomial(10, 0.6)$.
+\\ We need to compute $P(X \geq 3)$.
+\begin{align*}
+	P(X \geq 3) &= 1 - P(X = 0) - P(X = 1) - P(X = 2)\\
+	&= 1 - \binom{10}{0} 0.6^0 (1-0.6)^{10-0} - \binom{10}{1} 0.6^1 (1-0.6)^{10-1} - \binom{10}{2} 0.6^2 (1-0.6)^{10-2}\\
+	&= 0.988
+\end{align*}
+}
+\thm{Binomial approximation to the hypergeometric distribution}{If $r$ and $N$ are large relative to $n$, and $\frac{r}{N} = p$ with $p \in [0,1]$; then if $X \sim hyp(N, r, n)$ and \\ $Y \sim Binomial(n, p)$, then
+\\[1em] $P(X = k) \approx P(Y = k)$.}
+
+\qs{Tim Hortons}{For the Roll Up the Rim promotion, Tim Hortons prints 16,225,200 cups, 2,704,200 of which offer a free coffee or donut. You buy 15 cups during the promotion. Let $X$ = the number of times you win a coffee or donut.
+\begin{enumerate}
+	\item What is the distribution of $X$?
+	\item If we suppose $X \sim Binomial(n,p)$, what are $n$ and $p$? What assumptions are we making?
+	\item What is the probability you never win?
+	\item What is the probability you win more than once?
+\end{enumerate}
+}
+\sol
+\begin{enumerate} 
+	\item $X \sim hyp(16\_225\_200, 2\_704\_200, 15)$
+	\item We will have $n = 15$ and $p = \frac{2\_704\_200}{16\_225\_200} = \frac{1}{6}$. We are assuming that the 15 cups are drawn independently and that the probability of winning is constant.
+	\item We need to compute $P(X = 0)$.
+	\begin{align*}
+		P(X = 0) &= \binom{15}{0} \left(\frac{1}{6}\right)^0 \left(1 - \frac{1}{6}\right)^{15-0}\\
+			 &= \left( \frac{5}{6} \right)^{15}\\
+			 &= 0.065
+	\end{align*}
+\item We need to compute $P(X \geq 2)$.
+	\begin{align*}
+		P(X \geq 2) &= 1 - P(X = 0) - P(X = 1)\\
+			&= 1 - \left( \frac{5}{6} \right)^{15} - \binom{15}{1} \left(\frac{1}{6}\right)^1 \left(1 - \frac{1}{6}\right)^{15-1}\\
+			&= 0.740
+	\end{align*}
+\end{enumerate}
+
+\section{Negative Binomial Distribution}
+\dfn{Negative Binomial Distribution}{Let $X$ be the number of failures of Bernoulli trials needed before observing $r$ successes. Then $X$ has a negative binomial distribution with parameters $k$ and $p$. Denoted by $X \sim NB(k, p).$
+\\[1em] $f(x)_X = \binom{x+k-1}{k-1} p^k (1-p)^x$, for $x \in \{0, 1, \dots, \infty\}$.}
+\newpage
+\nt{There are some key differences between the negative binomial and the binomial distributions. \begin{enumerate}
+		\item Binomial has a fixed number of trials, while negative binomial has an infinte number of successes.
+		\item Binomial counts the number of successes, while negative binomial counts the number of failures.
+	\end{enumerate}
+}
+
+\ex{Negative Binomial Distribution}{Suppose a coin is flipped until 5 heads are observed, if $X$ is the number of tails observed, then \\ $X \sim NB(5, 0.5)$.}
+
+\section{Geomertic Distribution}
+\dfn{Geometric Distribution}{Let $X$ be the number of Bernoulli trials needed to get the first success. Then $X$ has a geometric distribution with parameter $p$. Denoted by $X \sim Geo(p)$. Note that the Geometric Distribution is a special case of the Negative Binomial Distribution, with $k = 1$.
+\\[1em] $f(x)_X = (1-p)^x p$, for $x \in \{0, 1, 2, \dots, \infty\}$.}
+
+\nt{It is easy to mistake the Geometric Distribution for the Binomial Distribution since they both concern Bernoulli trials. However, 
+Binomial concerns a fixed number of trials (n) - Geometric
+does not!}
+
+\qs{}{You start buying Roll Up the Rim cups, where you assume the probability of victory is $\frac{1}{6}$ and independent of all previous plays. You stop buying once you win for the first time. What is the probability you will have to buy at least 6 cups?}
+
+\sol Firstly, we define $X$ to be the number of cups you buy before winning. 
+\\ Then $X \sim Geo(\frac{1}{6})$. We need to compute $P(X \geq 5)$. 
+\\ \textbf{Notice that we want $X \geq 5$, not $X \geq 5$. This is because for the 6th cup to win, we need to have 5 losing cups first.} 
+
+\begin{align*}
+	P(X \geq 5) &= 1 - P(X = 0) - P(X = 1) - P(X = 2) - P(X = 3) - P(X = 4)\\
+		    &= 1 - \frac{1}{6}\left(\frac{5}{6}\right)^0 - \frac{1}{6}\left(\frac{5}{6}\right)^1 - \frac{1}{6}\left(\frac{5}{6}\right)^2 - \frac{1}{6}\left(\frac{5}{6}\right)^3 - \frac{1}{6}\left(\frac{5}{6}\right)^4\\
+		    &= 0.402
+\end{align*}
+
+\section{Poisson Distribution (from Binomial)}
+Hisorically, the Binomial Distribution was difficult to compute. The Poisson Distribution was developed as a way to approximate the Binomial Distribution when $n$ is large and $p$ is small.
+\dfn{Approximating the Binomial Distribution}{As $n \to \infty$ and $p \to 0$, the p.f. for the Binomial Distribution approaches \begin{align*}
+	f(x)_X \approx \frac{e^{-\lambda} \lambda^x}{x!}
+\end{align*}
+where $\lambda = np$.}
+
+\qs{}{Define $X$ to be the number of people with a certain disease. If we test 1000 people, and the probability of testing positive is 0.01, what is the probability that 5 people test positive?}
+
+\sol We will use the Poisson Distribution to approximate the Binomial Distribution.
+\\ We know $X \sim Binomial(1000, 0.01)$ or $X \sim Poi(10)$.
+\\ We need to compute $P(X = 5)$.
+\\ \begin{align*}
+	P(X = 5) &= \frac{e^{-10} 10^5}{5!}\\
+		 &= 0.0378
+\end{align*}
+It is also possible to use the Binomial Distribution directly:
+\\ \begin{align*}
+	P(X = 5) &= \binom{1000}{5} \left(0.01\right)^5 \left(0.99\right)^{1000-5}\\
+		 &= 0.0378
+\end{align*}
+As you can see, the two methods give a very similar answer because $n$ is large and $p$ is small!
+
+\section{Poisson Distribution (from Poisson Process)}
+\dfn{Poisson Process}{A process that counts to number of events that occur in a fixed time interval and satisfies the following conditions:
+	\begin{enumerate}
+		\item \textbf{Independence:} The number of occurrences in non-overlapping intervals are independent
+		\item \textbf{Indivisuality or Singularity:} The probability of more than one occurrence in a small interval is zero
+		\item \textbf{Homoegeneity or Uniformity:} The rate of occurrence is constant over time
+	\end{enumerate}
+	We denote the number of occurrences in a time interval of length $t$ by $X_t \sim Poi(\lambda t)$ and $f_t(x) = \frac{e^{-\lambda t} (\lambda t)^x}{x!}$.}
+
+\ex{Poisson Process}{Suppose a website has 100 visirors per minute (following a Poisson Process). What is the probability that 5 visitors arrive in a 10 second interval?
+\\ $X_{10} \sim Poi(\frac{100}{60} \cdot 10)$.
+\\ $P(X_{10} = 5) = \frac{e^{-\frac{100}{6}} \left(\frac{100}{6}\right)^5}{5!} = 0.00061$.}
+
+\chapter{Expected Value and Variance}
+\section{Summarizing Data on Random Variables}
+\dfn{Mean}{The mean of a set of data is defined as the sum of the data points divided by the number of data points.}
+\dfn{Median}{The median of a set of data is the middle value of the data points.}
+\dfn{Mode}{The mode of a set of data is the most common value of the data points.}
+\ex{}{Do you really need an example?}
+
+\section{Expectation of a Random Variable}
+\dfn{Expected Value}{Suppose $X$ is a random variable with p.f. $f(x)$ and range $A$. Then the expected value of $X$ is defined as:
+	\begin{align*}
+		E(X) = \sum_{x \in A} x f(x)
+	\end{align*}
+The expected value of $X$ is sometimes called the mean of $X$ or the first moment of $X$, denoted by $\mu_X$.}
+\newpage
+\ex{}{Suppose $X$ is the outcome of a fair die roll. What is $E(X)$?
+	\\ Since $X$ is a fair die roll, $f(x) = \frac{1}{6}$ for all $x \in \{1, 2, 3, 4, 5, 6\}$.
+	\\ \begin{align*}
+		E(X) &= \sum_{x \in \{1, 2, 3, 4, 5, 6\}} x \frac{1}{6}\\
+		     &= \frac{1}{6} \cdot \left(1 + 2 + 3 + 4 + 5 + 6\right)\\
+		     &= \frac{21}{6}\\
+		     &= 3.5
+	\end{align*}}
+
+	\qs{Real World Application}{Suppose it costs \$100 to enter a contest. The contest entails that you receive a random amount of money between \$1 and \$400. What is the \textbf{net} expected value of the contest?}
+	\sol 
+	\\ Let $X$ be the amount of money you receive. Then $X \sim U(1, 400)$.
+	\\ We need to compute $E(X) - 100$.
+	\\ \begin{align*}
+		E(X) - 100 &= \sum_{x \in \{1, 2, \ldots, 400\}} x \frac{1}{400} - 100\\
+			   &= \frac{1}{400} \cdot \left(1 + 2 + \ldots + 400\right) - 100\\
+			   &= \frac{1}{400} \cdot \frac{400 \cdot 401}{2} - 100\\
+			   &= \frac{401}{2} - 100\\
+			   &= 100.5
+	\end{align*}
+	\\ The expected value is positive, so you should enter the contest!
+\thm{Law of The Unconscious Statistician}{Let $X$ be a r.v. with p.f. $f(x)$ and range $A$. The expected value of some function of $x$, $g(x)$ is given by:
+	\begin{align*}
+		E(g(X)) = \sum_{x \in A} g(x) f(x)
+	\end{align*}
+}
+\nt{$\E(.)$ is a linear operator. That is, $E(aX + b) = aE(X) + b$.}
+
+\section{Applications of Expectation}
+\section{Means of Distributions}
+In this section, we define the mean of distributions we looked at earlier.
+
+\dfn{Mean of Binomial Distribution}{Let $X \sim Binomial(n, p)$. Then $E(X) = np$.}
+
+\dfn{Mean of Poisson Distribution}{Let $X \sim Poi(\lambda)$. Then $E(X) = \lambda$.}
+
+\dfn{Mean of Hypergeometric Distribution}{Let $X \sim Hyper(n, N, r)$. Then $E(X) = \frac{nr}{N}$.}
+
+\dfn{Mean of Geometric Distribution}{Let $X \sim Geo(p)$. Then $E(X) = \frac{1-p}{p}$.}
+
+\dfn{Mean of Negative Binomial Distribution}{Let $X \sim NB(k, p)$. Then $E(X) = \frac{k(1-p)}{p}$.}
+
+\section{Variances of Distributions}
+\dfn{Variance}{The variance of a random variable $X$ is defined as:
+	\begin{align*}
+		\Var(X) = E\left((X - E(X))^2\right)
+	\end{align*}
+Another way to define variance is \textbf{the inside-outside method}:
+	\begin{align*}
+		\Var(X) &= E(X^2) - E(X)^2
+	\end{align*}
+}
+
+\cor{Some Properites of Variance}{
+	\begin{enumerate}
+		\item $\forall$ r.v. $X$, $\Var(X) \geq 0$
+		\item $\forall$ r.v. $X$, $\Var(X) = 0 \iff X$ is a constant
+		\item $\E(X^2) \geq \E(X)^2$
+		\item $\Var(aX + b) = a^2 \Var(X)$
+	\end{enumerate}
+}
+
+\dfn{Standard Deviation}{The standard deviation of a random variable $X$ is defined as:
+	\begin{align*}
+		\sigma(X) = \sqrt{\Var(X)}
+	\end{align*}
+}
+
+\dfn {Variance of Binomial Distribution}{Let $X \sim Binomial(n, p)$. Then $\Var(X) = np(1-p)$.}
+
+\dfn{Variance of Poisson Distribution}{Let $X \sim Poi(\lambda)$. Then $\Var(X) = \lambda$.}
+
+\dfn{Variance of Hypergeometric Distribution}{Let $X \sim hyp(n, N, r)$. Then $\Var(X) = \frac{nr(1-\frac{r}{N})}{N(N-1)}$.}
+
+\dfn{Variance of Geometric Distribution}{Let $X \sim Geo(p)$. Then $\Var(X) = \frac{1-p}{p^2}$.}
+
+\dfn{Variance of Negative Binomial Distribution}{Let $X \sim NB(k, p)$. Then $\Var(X) = \frac{k(1-p)}{p^2}$.}
+
+
+\chapter{Continuous Random Variables}
+\section{General Terminology and Notation}
+\dfn{Continuous Random Variable}{A continuous random variable is a random variable whose range is a subset of the real numbers.}
+\dfn{Probability Density Function}{A continious r.v. has a probability density function
+	$f(x)$ that satisfies the following conditions:
+	\begin{enumerate}
+		\item $f(x) \geq 0$ for all $x \in \mathbb{R}$
+		\item $\int_{-\infty}^{\infty} f(x) dx = 1$
+		\item $P(a \leq X \leq b) = \int_a^b f(x) dx$
+	\end{enumerate}
+}
+\dfn{The support of a c.r.v.}{The support of a c.r.v., \text{supp}(x), is defined as the set of all $x$ such that $f(x) \neq 0$.}
+
+\dfn{Cumulative Distribution Function}{The cumulative distribution function of a c.r.v. $X$ is defined as:
+	\begin{align*}
+		F(x) = P(X \leq x) = \int_{-\infty}^x f(t) dt
+	\end{align*}
+}
+
+\cor{} {
+When $f(x)$ is continuous, we have $f(x) = \frac{d}{dx} F(x)$.
+\\ This is useful because $F(x)$ is easier to work with than $f(x)$.
+\\ $P(a \leq X \leq b) = F(b) - F(a) = \int_a^b f(x) dx$.
+}
+
+\newpage
+
+\dfn{Quantile} {
+Suppose $X$ is a c.r.v. with CDF $F(x)$. Then the $p$-th quantile of $X$ is the value of $q(p)$ such that $P(X \leq q(p)) = p$.}
+	
+
+\thm{Change of Variables} {
+Let $X$ be a c.r.v. with CDF $F(x)$ and $Y = g(X)$ be a c.r.v. with CDF $G(y)$. Then $G(y) = F(g^{-1}(y))$.
+\\[1em] \textbf{Recepie for Change of Variables:}
+	\begin{enumerate}
+		\item Find the range of $Y$.
+		\item Write the CDF of $Y$ as a function of $X$
+		\item Use $F(x)$ to find $G(y)$
+		\item (Optional) Find the PDF of $Y$ by taking the derivative of $G(y)$
+	\end{enumerate}
+}
+
+\ex{Change of Variables} {
+Let $X$ be a c.r.v. with CDF $F(x) = 0.25x$ and $Y = \sqrt{X}$. Find the CDF of $Y$.
+\\[1em]
+\textbf{Solution:}
+	\begin{enumerate}
+		\item The range of $Y$ is $[0, \infty)$.
+		\item $G(y) = P(Y \leq y) = P(\sqrt{X} \leq y) = P(X \leq y^2) = F(y^2)$
+		\item $G(y) = F(y^2) = 0.25y^2$
+		\item $f(y) = \frac{d}{dy} G(y) = \frac{d}{dy} 0.25y^2 = 0.5y$ (Optional)
+	\end{enumerate}
+}
+
+
+\dfn{Expected Value of a c.r.v.}{Let $X$ be a c.r.v. with CDF $F(x)$. Then $E(X) = \int_{-\infty}^{\infty} xf(x) dx$.
+\\ The LOTUS theorem states that $E(G(X)) = \int_{-\infty}^{\infty} g(x)f(x) dx$.
+\\ Other properties defined for discrete r.v. also hold for c.r.v. (e.g. linearity of $E(.)$, Var$(X) = E(X^2) - E(X)^2$, etc.)}
+
+\section{Continuous Uniform Distribution}
+\dfn{Continuous Uniform Distribution}{$X$ is said to have a continuous uniform distribution on $(a, b)$ if $X$ takes values in $(a, b)$ or $[a,b]$ where all subintervals of fixed length have the same probability.
+\\ This is abbreviated as $X \sim U(a, b)$.
+\\ The PDF of $X$ is $f(x) = 
+\begin{cases} 
+	\frac{1}{b-a} & \text{if } a \leq x \leq b \\
+	0 & \text{otherwise}
+
+\end{cases}$.
+\\[1em] The CDF of $X$ is $F(x) =
+\begin{cases} 
+	0 & \text{if } x < a \\
+	\frac{x-a}{b-a} & \text{if } a \leq x \leq b \\
+	1 & \text{if } x > b
+\end{cases}$.
+
+}
+
+
+
+\end{document}

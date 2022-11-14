@@ -1,0 +1,68 @@
+\documentclass{report}
+
+\input{preamble}
+\input{macros}
+\input{letterfonts}
+
+\title{\Huge{STAT 230}\\Midterm II Review}
+\author{\huge{Sami Yousef}}
+\date{}
+
+\begin{document}
+
+\maketitle
+\newpage% or \cleardoublepage
+\pdfbookmark[section]{\contentsname}{toc}
+\tableofcontents
+\pagebreak
+
+\chapter{First Chapter}
+\section{First Section}
+\dfn{Example Definition}{Here is an example of a definition. It is a definition of a definition. But really, it is just some filler stuff as an example.}
+\qs {} {Here is an example of a question. It is a question of a question. Can you answer it?}
+\sol Here is an example of a solution. It is a solution of a solution. But really, it is just some filler stuff as an example.
+\nt{Here is an example of a note. It is a note of a note. But really, it is just some filler stuff as an example.}
+\clm{Topology}{}{Topology is cool}
+\ex{Open Set and Close Set}{A set is open if it contains its interior. A set is closed if it contains its closure.}
+\thm{}{If $x\in$ open set $V$ then $\exists$ $\delta>0$ such that $B_{\delta}(x)\subset V$}
+\cor{}{By the result of the proof, we can then show...}
+\mlenma{}{Suppose $\vec{v_1}, \dots, \vec{v_n} \in \RR[n]$ is subspace of $\RR^n$.}
+\mprop{}{$1 + 1 = 2$.}
+\section{Algorithms}
+\begin{algorithm}[H]
+ \KwIn{This is some input}
+\KwOut{This is some output}
+\SetAlgoLined
+\SetNoFillComment
+\tcc{This is a comment}
+\vspace{3mm}
+some code here\;
+$x \leftarrow 0$\;
+$y \leftarrow 0$\;
+\uIf{$ x > 5$} {
+    x is greater than 5 \tcp*{This is also a comment}
+}
+\Else {
+    x is less than or equal to 5\;
+}
+\ForEach{y in 0..5} {
+    $y \leftarrow y + 1$\;
+}
+\For{$y$ in $0..5$} {
+    $y \leftarrow y - 1$\;
+}
+\While{$x > 5$} {
+    $x \leftarrow x - 1$\;
+}
+\Return Return something here\;
+\caption{what}
+\end{algorithm}
+\section{Second Section}
+\section{Third Section}
+
+\chapter{Second Chapter}
+\section{First Section}
+\chapter{Third Chapter}
+\section{First Section}
+\chapter{Fourth Chapter}
+\end{document}
